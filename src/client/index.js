@@ -8,6 +8,6 @@ import './styles/footer.scss'
 import './styles/form.scss'
 import './styles/resets.scss'
 
-export{handleSubmit}
-export{checkForUrl}
-export{checkConfidence}
+export { handleSubmit, checkForUrl, checkConfidence }
+
+

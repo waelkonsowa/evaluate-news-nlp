@@ -8,10 +8,18 @@ const mockAPIResponse = require('./mockAPI.js')
 const app = express()
 
 const bodyParser = require("body-parser");
+// to use json
 app.use(bodyParser.json())
+// to use url encoded values
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
 
 const fetch = require("node-fetch");
+
 const cors = require("cors");
+// Enable CORS requests
+app.use(cors())
 
 app.use(express.static('dist'))
 
@@ -25,6 +33,16 @@ console.log(`Your API key is ${apiData.api_key}`);
 
 let api_end_data = {};
 
+function getWelcomeMessage(lang) {
+    let msg = "";
+    if (lang == "en") {
+        msg = "welcome";
+    } else {
+        msg = "مرحبا"
+    }
+    return `${msg}`
+}
+
 app.get('/', function (req, res) {
     // res.sendFile('dist/index.html')
     res.sendFile(path.resolve('dist/index.html'))
@@ -32,6 +50,7 @@ app.get('/', function (req, res) {
 
 app.post('/get', async(req,res)=>{
     console.log(req.body)
+    // const response = await fetch(`${baseUrl}${apiData.api_key}&lang=auto&url=${req.body.key}`);
     const response = await fetch(`${baseUrl}${apiData.api_key}&lang=auto&url=${req.body.key}`);
     try{
         let apiResponse = await response.json();
@@ -50,3 +69,8 @@ app.listen(8085, function () {
 app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
+
+app.get('/welcome', function (req, res){
+    res.send(getWelcomeMessage("en"))
+})
+
